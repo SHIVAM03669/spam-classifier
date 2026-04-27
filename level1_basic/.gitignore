@@ -1,0 +1,333 @@
+# File: .gitignore
+
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║              SPAM CLASSIFIER - .gitignore                        ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ================================================================
+# PYTHON
+# ================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+
+# ================================================================
+# VIRTUAL ENVIRONMENT
+# ================================================================
+
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+virtualenv/
+
+
+# ================================================================
+# DATA FILES (Large - Don't upload to GitHub)
+# ================================================================
+
+# Raw data folders
+level1_basic/data/raw/
+level2_intermediate/data/
+level3_advanced/data/
+
+# Processed data
+level1_basic/data/processed/
+*.csv
+*.tsv
+*.json
+!requirements.json
+
+# Compressed files
+*.tar.gz
+*.tar.bz2
+*.zip
+*.rar
+*.7z
+*.gz
+
+# Enron dataset (very large)
+**/enron/
+**/maildir/
+
+
+# ================================================================
+# MODEL FILES (Large - Don't upload to GitHub)
+# ================================================================
+
+# Trained models
+level1_basic/models/*.joblib
+level1_basic/models/*.pkl
+level1_basic/models/*.pickle
+level1_basic/models/*.h5
+level1_basic/models/*.pt
+level1_basic/models/*.pth
+level1_basic/models/*.onnx
+
+# Keep model info JSON
+!level1_basic/models/model_info.json
+
+# TensorFlow / Keras
+*.h5
+*.keras
+saved_model/
+checkpoint/
+
+# PyTorch
+*.pt
+*.pth
+
+# Scikit-learn
+*.joblib
+*.pkl
+*.pickle
+
+
+# ================================================================
+# IDE / EDITOR
+# ================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# Spyder
+.spyderproject
+.spyproject
+
+
+# ================================================================
+# OS GENERATED
+# ================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+
+# ================================================================
+# GOOGLE API / CREDENTIALS (IMPORTANT - Security!)
+# ================================================================
+
+# OAuth credentials - NEVER upload these!
+credentials.json
+client_secret*.json
+token.pickle
+token.json
+*.p12
+*.pem
+
+# Config with secrets
+level2_intermediate/config/credentials.json
+level2_intermediate/config/token.pickle
+**/config/credentials.json
+**/config/token.pickle
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+
+# ================================================================
+# LOGS & TEMPORARY FILES
+# ================================================================
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+
+# ================================================================
+# FLASK / WEB APP
+# ================================================================
+
+instance/
+.webassets-cache
+*.db
+*.sqlite
+
+
+# ================================================================
+# MISCELLANEOUS
+# ================================================================
+
+# Secrets
+secrets/
+private/
+
+# Local configuration
+local_settings.py
+config.local.py
+
+# Uploads
+uploads/
+static/uploads/
+
+# Node modules (if using any JS)
+node_modules/
+package-lock.json
+
+# Output files
+output/
+results/
+exports/

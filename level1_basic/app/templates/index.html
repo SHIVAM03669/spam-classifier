@@ -1,0 +1,311 @@
+<!-- File: level1_basic/app/templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Email Classifier</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .emoji {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+        
+        .result.spam {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
+        }
+        
+        .result.ham {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+            color: white;
+        }
+        
+        .result-label {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .confidence {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .probability-bar {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 30px;
+        }
+        
+        .probability-fill {
+            height: 100%;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+        
+        .examples {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .examples h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .example-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .example-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="emoji">📧</div>
+            <h1>Spam Classifier</h1>
+            <p class="subtitle">Paste any email or message to check if it's spam</p>
+            
+            <textarea id="emailText" placeholder="Enter email content here...
+
+Example: Congratulations! You've won \$1,000,000! Click here to claim your prize now!"></textarea>
+            
+            <button class="btn" onclick="classifyEmail()">
+                🔍 Analyze Message
+            </button>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; color: #666;">Analyzing...</p>
+            </div>
+            
+            <div class="result" id="result">
+                <div class="result-label" id="resultLabel"></div>
+                <div class="confidence" id="confidence"></div>
+                <div class="probability-bar">
+                    <div class="probability-fill" id="probabilityFill"></div>
+                </div>
+            </div>
+            
+            <div class="examples">
+                <h3>📝 Try these examples:</h3>
+                <button class="example-btn" onclick="setExample('spam1')">
+                    🚫 Free iPhone
+                </button>
+                <button class="example-btn" onclick="setExample('spam2')">
+                    🚫 Win Money
+                </button>
+                <button class="example-btn" onclick="setExample('ham1')">
+                    ✅ Meeting Request
+                </button>
+                <button class="example-btn" onclick="setExample('ham2')">
+                    ✅ Project Update
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const examples = {
+            spam1: "CONGRATULATIONS! You've been selected to receive a FREE iPhone 15! Click here immediately to claim your prize before it expires! Act now!!!",
+            spam2: "URGENT: You've won \$5,000,000 in the international lottery! Send your bank details to claim your winnings. This is not a joke!",
+            ham1: "Hi team, can we schedule a meeting tomorrow at 3 PM to discuss the project progress? Please let me know your availability.",
+            ham2: "Just following up on the project deadline. The client has requested an update by Friday. Let me know if you need any help."
+        };
+        
+        function setExample(type) {
+            document.getElementById('emailText').value = examples[type];
+        }
+        
+        async function classifyEmail() {
+            const text = document.getElementById('emailText').value.trim();
+            
+            if (!text) {
+                alert('Please enter some text to analyze');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                // Show result
+                const resultDiv = document.getElementById('result');
+                const resultLabel = document.getElementById('resultLabel');
+                const confidence = document.getElementById('confidence');
+                const probabilityFill = document.getElementById('probabilityFill');
+                
+                if (data.is_spam) {
+                    resultDiv.className = 'result spam';
+                    resultLabel.innerHTML = '🚫 SPAM DETECTED';
+                    probabilityFill.style.background = '#ff6b6b';
+                } else {
+                    resultDiv.className = 'result ham';
+                    resultLabel.innerHTML = '✅ NOT SPAM';
+                    probabilityFill.style.background = '#51cf66';
+                }
+                
+                confidence.innerHTML = `Confidence: ${data.confidence.toFixed(1)}%`;
+                probabilityFill.style.width = `${data.confidence}%`;
+                probabilityFill.innerHTML = `${data.confidence.toFixed(1)}%`;
+                
+                resultDiv.style.display = 'block';
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                alert('Error analyzing message. Please try again.');
+                console.error(error);
+            }
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('emailText').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                classifyEmail();
+            }
+        });
+    </script>
+</body>
+</html>
