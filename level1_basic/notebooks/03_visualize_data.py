@@ -2,9 +2,22 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+# Resolve paths from this file's location so execution works from any CWD.
+project_root = Path(__file__).resolve().parents[2]
+data_dir = project_root / 'level1_basic' / 'data'
+input_path = data_dir / 'spam.tsv'
+output_path = data_dir / 'data_visualization.png'
+
+if not input_path.exists():
+    raise FileNotFoundError(
+        f"Dataset not found at '{input_path}'. "
+        "Run level1_basic/notebooks/01_download_data.py first."
+    )
 
 # Load data
-df = pd.read_csv('level1_basic/data/spam.tsv', sep='\t', header=None, names=['label', 'message'])
+df = pd.read_csv(input_path, sep='\t', header=None, names=['label', 'message'])
 df['length'] = df['message'].apply(len)
 
 # Create visualization
@@ -35,7 +48,8 @@ axes[2].set_ylabel('Average Length')
 axes[2].tick_params(axis='x', rotation=0)
 
 plt.tight_layout()
-plt.savefig('level1_basic/data/data_visualization.png', dpi=150)
+output_path.parent.mkdir(parents=True, exist_ok=True)
+plt.savefig(output_path, dpi=150)
 plt.show()
 
 print("Visualization saved!")
